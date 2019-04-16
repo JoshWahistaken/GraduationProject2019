@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Home</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="static/css/venobox/venobox.css" type="text/css" media="screen" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link href="static/css/cropper.css" rel="stylesheet"/>
+    <link href="static/css/cropper-demo.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="static/css/fontAwesome.css">
+    <link rel="stylesheet" href="static/css/light-box.css">
+    <link rel="stylesheet" href="static/css/templatemo-main.css">
+    <link rel="stylesheet" href="static/css/form.css">
+    <script src="static/js/uploadImg.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/css/uploadImg.css">
+    <!--<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" rel="stylesheet">-->
+
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+
+    <!--<link rel="stylesheet" href="static/css/reset.min.css">-->
+
+
+    <!--<link rel="stylesheet" href="static/css/style.css">-->
+    <script type="text/javascript" src="static/js/cropper.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <script src="static/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+</head>
+
+<body>
+
+<div class="sequence">
+
+    <div class="seq-preloader">
+        <svg width="39" height="16" viewBox="0 0 39 16" xmlns="http://www.w3.org/2000/svg"
+             class="seq-preload-indicator">
+            <g fill="#F96D38">
+                <path class="seq-preload-circle seq-preload-circle-1"
+                      d="M3.999 12.012c2.209 0 3.999-1.791 3.999-3.999s-1.79-3.999-3.999-3.999-3.999 1.791-3.999 3.999 1.79 3.999 3.999 3.999z"/>
+                <path class="seq-preload-circle seq-preload-circle-2"
+                      d="M15.996 13.468c3.018 0 5.465-2.447 5.465-5.466 0-3.018-2.447-5.465-5.465-5.465-3.019 0-5.466 2.447-5.466 5.465 0 3.019 2.447 5.466 5.466 5.466z"/>
+                <path class="seq-preload-circle seq-preload-circle-3"
+                      d="M31.322 15.334c4.049 0 7.332-3.282 7.332-7.332 0-4.049-3.282-7.332-7.332-7.332s-7.332 3.283-7.332 7.332c0 4.05 3.283 7.332 7.332 7.332z"/>
+            </g>
+        </svg>
+    </div>
+
+</div>
+
+
+<nav>
+    <div class="logo">
+        <img src="static/img/logo.png" alt="">
+    </div>
+    <ul>
+        <li><a href="#1"><i class="fa fa-home"></i> <em>Home</em></a></li>
+        <li><a href="#2"><i class="fa fa-user"></i> <em>About</em></a></li>
+        <li><a href="#3"><i class="fa fa-image"></i> <em>Work</em></a></li>
+        <li><a href="#4" th:if="${user.id} eq ${session.user.id}"><i class="fa fa-pencil"></i> <em>Edit</em></a></li>
+        <li><a href="#5" th:if="${user.id} eq ${session.user.id}"><i class="fa fa-upload"></i> <em>Upload</em></a></li>
+    </ul>
+</nav>
+<script th:inline="javascript">
+    var user = [[${user}]];
+    var currentUser = [[${session.user}]]
+</script>
+<script>
+</script>
+
+<div class="slides">
+    <div class="slide" id="1">
+        <div class="content first-content">
+            <div class="container-fluid">
+                <div class="col-md-4">
+                    <div class="preview-container">
+                        <div class="large-wrapper">
+                            <div class="image-container large">
+                                <img th:src="${user.avatar}" class="noavatar"/>
+                            </div>
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <h2 th:text="${user.name}"></h2>
+                    <p th:text="${user.description}">Undergraduate From Nanjing University,Graduated in <em>2019</em>
+                    </p>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="main-btn" th:if="${user.id} ne ${session.user.id}"><a href="#2">Follow <i
+                            class="fa fa-plus"></i></a></div>
+                    <div class="fb-btn" th:if="${user.id} ne ${session.user.id}"><a href="#" target="_blank">Message <i
+                            class="fa fa-envelope"></i></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide" id="2">
+        <div class="content second-content">
+            <div class="container-fluid">
+                <div class="col-md-6">
+                    <div class="left-content">
+                        <h2>About Me</h2>
+                        <p th:text="${user.boardMessage}"></p>
+
+                        <div class="main-btn"><a href="#3">See My Work!</a></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="right-image">
+                        <img src="static/img/about_image.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide" id="3">
+        <div class="content fourth-content">
+            <div class="container-fluid">
+                <div class="row">
+
+                    <div class="col-md-4 col-sm-6" th:each="work:${works}">
+                        <div class="item">
+                            <div class="thumb">
+                                <a class="venobox" data-vbtype="iframe" th:href="@{work(workId=${work.id})}" data-lightbox="image-1">
+                                    <div class="hover-effect">
+                                        <div class="hover-content">
+                                            <h2 th:text="${work.title}"></h2>
+                                            <p th:text="${work.description}"></p>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="image">
+                                    <img th:src="${work.imgPath}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide" id="4">
+        <div class="content fifth-content">
+            <div class="container-fluid">
+                <div class="col-md-6">
+                    <!--<div id="map">-->
+                    <!--<iframe src="" width="100%" height="500px" frameborder="0" style="border:0" allowfullscreen></iframe>-->
+                    <!--</div>-->
+                    <form method="post" th:action="@{/avatar/edit}" th:object="${user}" enctype="multipart/form-data"
+                          ng-app="cropperDemo">
+                        <p>
+                            <button class="btn-upload btn-lg" style="float: left">Select</button>
+                            <input type="file" name="avatar1" id="cropper-input"/>
+                            Support formats: JPG, PNG
+                        </p>
+                        <div class="preview-container">
+                            <div class="image-container target" id="cropper-target">
+                                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                     class="noavatar"/>
+                            </div>
+                            <div class="large-wrapper">
+                                <div class="image-container large" id="preview-large">
+                                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                         class="noavatar"/>
+                                </div>
+                                <p></p>
+                            </div>
+                            <!--<div>-->
+                            <!--<div class="image-container medium" cropper-preview="avatar">-->
+                            <!--<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="noavatar" />-->
+                            <!--</div>-->
+                            <!--<p>Medium</p>-->
+                            <!--<div class="image-container small" cropper-preview="avatar">-->
+                            <!--<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="noavatar" />-->
+                            <!--</div>-->
+                            <!--<p>Small</p>-->
+                            <!--</div>-->
+                        </div>
+                        <input type="hidden" id="x" name="x" th:field="*{avatar_x}"/>
+                        <input type="hidden" id="y" name="y" th:field="*{avatar_y}"/>
+                        <input type="hidden" id="w" name="w" th:field="*{avatar_w}"/>
+                        <input type="hidden" id="h" name="h" th:field="*{avatar_h}"/>
+                        <button type="submit" id="avatar-submit" class="btn">Upload an avatar</button>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <form id="contact" th:action="@{/userinfo/edit}" th:object="${user}" method="post">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <fieldset class="form-label-group">
+                                    <input name="name" type="text" class="form-control" id="name" th:field="*{name}"
+                                           placeholder="Your name..." required="">
+                                    <label for="name">You name...</label>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-12">
+                                <fieldset class="form-label-group">
+                                    <input name="subject" type="password" class="form-control" id="password"
+                                           th:field="*{password}" placeholder="Your new password ..." required="">
+                                    <label for="password">Your new password...</label>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-12">
+                                <fieldset class="form-label-group">
+                                    <input name="subject" type="password" class="form-control" id="passwordConfirm"
+                                           placeholder="Confirm your password.." required="">
+                                    <label for="passwordConfirm">Confirm your password...</label>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-12">
+                                <fieldset>
+                                    <textarea name="message" rows="6" class="form-control" id="description"
+                                              th:field="*{description}" placeholder="About you..."
+                                              required=""></textarea>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-12">
+                                <fieldset>
+                                    <button type="submit" id="form-submit" class="btn">Confirm Changes</button>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            var password = document.getElementById("password");
+                            var confirm_password = document.getElementById("passwordConfirm");
+
+                            function validatePassword() {
+                                if (password.value !== confirm_password.value) {
+                                    confirm_password.setCustomValidity("Passwords Don't Match.");
+                                } else {
+                                    confirm_password.setCustomValidity('');
+                                }
+                            }
+
+                            password.onchange = validatePassword;
+                            confirm_password.onkeyup = validatePassword;
+                        </script>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide" id="5">
+        <div class="content fifth-content">
+            <div class="container-fluid">
+                <form id="upBox" th:action="@{/user/upload}" th:object="${work}" enctype="multipart/form-data" method="post">
+                    <div id="inputBox">
+                        <input type="file" name="file" title="请选择图片" id="file" multiple="multiple"
+                               accept="image/png,image/jpg,image/gif,image/JPEG"/>SELECT
+
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <fieldset class="form-label-group">
+                            <input name="name" type="text" class="form-control" id="title" th:field="*{title}"
+                                   placeholder="Your Title.." required="">
+                            <label for="title">Title</label>
+                        </fieldset>
+                    </div>
+
+                    <div id="imgBox">
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <fieldset>
+                                    <textarea name="message" rows="6" class="form-control" th:field="*{description}"
+                                               placeholder="Write your work description here..."
+                                              required=""></textarea>
+                        </fieldset>
+                    </div>
+                    <div>
+                    <input type="submit" id="btn" value="Upload your work!" style="float: left">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <div class="content">
+        <p>Copyright &copy; 2019.WeDesign All rights reserved.</p>
+    </div>
+</div>
+
+
+<script src="static/js/vendor/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="static/js/venobox/venobox.min.js"></script>
+<script src="static/js/vendor/bootstrap.min.js"></script>
+<script src="static/js/datepicker.js"></script>
+<script src="static/js/plugins.js"></script>
+<script src="static/js/main.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        //initialize venobox
+        $('.venobox').venobox();
+        // navigation click actions
+        $('.scroll-link').on('click', function (event) {
+            event.preventDefault();
+            var sectionID = $(this).attr("data-id");
+            scrollToID('#' + sectionID, 750);
+        });
+        // scroll to top action
+        $('.scroll-top').on('click', function (event) {
+            event.preventDefault();
+            $('html, body').animate({scrollTop: 0}, 'slow');
+        });
+        // mobile nav toggle
+        $('#nav-toggle').on('click', function (event) {
+            event.preventDefault();
+            $('#main-nav').toggleClass("open");
+        });
+    });
+
+    // scroll function
+    function scrollToID(id, speed) {
+        var offSet = 0;
+        var targetOffset = $(id).offset().top - offSet;
+        var mainNav = $('#main-nav');
+        $('html,body').animate({scrollTop: targetOffset}, speed);
+        if (mainNav.hasClass("open")) {
+            mainNav.css("height", "1px").removeClass("in").addClass("collapse");
+            mainNav.removeClass("open");
+        }
+    }
+
+    if (typeof console === "undefined") {
+        console = {
+            log: function () {
+            }
+        };
+    }
+</script>
+<script>
+    var cropper = new Cropper({
+        element: document.getElementById('cropper-target'),
+        previews: [
+            document.getElementById('preview-large')
+        ],
+        onCroppedRectChange: function (rect) {
+            console.log(rect);
+            document.getElementById("x").value = rect.left;
+            document.getElementById("y").value = rect.top;
+            document.getElementById("w").value = rect.width;
+            document.getElementById("h").value = rect.height
+            console.log(document.getElementById("x").value)
+        }
+    });
+    var input = document.getElementById('cropper-input');
+    input.onchange = function () {
+        if (typeof FileReader !== 'undefined') {
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                cropper.setImage(event.target.result);
+            };
+            if (input.files && input.files[0]) {
+                reader.readAsDataURL(input.files[0]);
+            }
+        } else { // IE10-
+            input.select();
+            input.blur();
+
+            var src = document.selection.createRange().text;
+            cropper.setImage(src);
+        }
+    };
+</script>
+<script type="text/javascript">
+    imgUpload({
+        inputId: 'file', //input框id
+        imgBox: 'imgBox', //图片容器id
+        buttonId: 'btn', //提交按钮id
+        upUrl: '/testController/uploadImg',  //提交地址
+        data: 'file', //参数名
+        num: "3"//最多上传图片个数
+    })
+</script>
+</body>
+</html>
