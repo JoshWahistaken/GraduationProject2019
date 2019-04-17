@@ -36,7 +36,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
-        <!--jquery-->
+        <!--simditor-jquery-->
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>

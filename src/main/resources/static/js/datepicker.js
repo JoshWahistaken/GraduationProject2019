@@ -1033,8 +1033,8 @@
 						content = before.content;
 				}
 
-				//Check if uniqueSort exists (supported by jquery >=1.12 and >=2.2)
-				//Fallback to unique function for older jquery versions
+				//Check if uniqueSort exists (supported by simditor-jquery >=1.12 and >=2.2)
+				//Fallback to unique function for older simditor-jquery versions
 				if ($.isFunction($.uniqueSort)) {
 					clsName = $.uniqueSort(clsName);
 				} else {

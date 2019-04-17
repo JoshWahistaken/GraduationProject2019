@@ -30,6 +30,7 @@ public class MyMvcConfig implements WebMvcConfigurer {
          * */
         registry.addViewController("/work").setViewName("work");
         registry.addViewController("/workImg").setViewName("workImg");
+        registry.addViewController("/simditor").setViewName("simditor");
     }
 
         @Override

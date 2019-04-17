@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="static/css/simditor/simditor.css"/>
+    <title>Title</title>
+</head>
+<body>
+<div style="margin-top: 20px;">
+    <fieldset>
+                                    <textarea name="message" rows="6"
+                                              placeholder="Write your work description here..."
+                                              required="" id="editor"></textarea>
+    </fieldset>
+    <button id="btn" value="save"></button>
+</div>
+<script src="static/js/simditor-jquery/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="static/js/simditor/module.js"></script>
+<script type="text/javascript" src="static/js/simditor/hotkeys.js"></script>
+<script type="text/javascript" src="static/js/simditor/uploader.js"></script>
+<script type="text/javascript" src="static/js/simditor/simditor.js"></script>
+<script type="text/javascript">
+    (function() {
+        $(function() {
+            var $preview, editor, mobileToolbar, toolbar;
+            Simditor.locale = 'en-US';
+            toolbar = ['title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'indent', 'outdent', 'alignment'];
+            editor = new Simditor({
+                textarea: $('#editor'),
+                placeholder: '这里输入文字...',
+                toolbar: toolbar,
+                pasteImage: true,
+                defaultImage: 'assets/images/image.png',
+                upload: location.search === '?upload' ? {
+                    url: ''
+                } : true
+            });
+            $preview = $('#preview');
+            if ($preview.length > 0) {
+                return editor.on('valuechanged', function(e) {
+                    return $preview.html(editor.getValue());
+                });
+            }
+            $("#btn").on('click',function (event){
+                console.log(editor.getValue());
+            })
+
+        });
+    }).call(this);
+</script>
+</body>
+</html>

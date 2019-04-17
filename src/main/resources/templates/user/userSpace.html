@@ -15,20 +15,40 @@
     <link rel="stylesheet" href="static/css/fontAwesome.css">
     <link rel="stylesheet" href="static/css/light-box.css">
     <link rel="stylesheet" href="static/css/templatemo-main.css">
-    <link rel="stylesheet" href="static/css/form.css">
+    <link rel="stylesheet" type="text/css" href="static/css/simditor/simditor.css" />
     <script src="static/js/uploadImg.js"></script>
     <link rel="stylesheet" type="text/css" href="static/css/uploadImg.css">
-    <!--<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" rel="stylesheet">-->
-
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
-
-    <!--<link rel="stylesheet" href="static/css/reset.min.css">-->
-
-
-    <!--<link rel="stylesheet" href="static/css/style.css">-->
     <script type="text/javascript" src="static/js/cropper.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
     <script src="static/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    <style>
+        .simditor{
+            text-align: left;
+            padding: auto;
+            border:none;
+        }
+        .simditor .image-popover{
+            height: 150px;
+        }
+        .simditor .image-src{
+             color:#000000;
+             border:1px solid #09ffe7;
+            margin-bottom: 2px;
+         }
+        .simditor .settings-field{
+            margin-bottom: 20px;
+        }
+        .simditor .image-alt{
+            color:#000000;
+            border:1px solid #09ffe7;
+            margin-bottom: 2px;
+        }
+        .simditor .image-size{
+            color:#000000;
+            border:1px solid #09ffe7;
+            margin-bottom: 2px;
+        }
+    </style>
 </head>
 
 <body>
@@ -259,7 +279,7 @@
                         <fieldset class="form-label-group">
                             <input name="name" type="text" class="form-control" id="title" th:field="*{title}"
                                    placeholder="Your Title.." required="">
-                            <label for="title">Title</label>
+                            <label for="title"></label>
                         </fieldset>
                     </div>
 
@@ -267,9 +287,9 @@
                     </div>
                     <div style="margin-top: 20px;">
                         <fieldset>
-                                    <textarea name="message" rows="6" class="form-control" th:field="*{description}"
+                                    <textarea name="message" rows="6"  th:field="*{description}"
                                                placeholder="Write your work description here..."
-                                              required=""></textarea>
+                                              required="" id="editor"></textarea>
                         </fieldset>
                     </div>
                     <div>
@@ -290,6 +310,10 @@
 
 <script src="static/js/vendor/jquery-1.11.2.min.js"></script>
 <script type="text/javascript" src="static/js/venobox/venobox.min.js"></script>
+<script type="text/javascript" src="static/js/simditor/module.js"></script>
+<script type="text/javascript" src="static/js/simditor/hotkeys.js"></script>
+<script type="text/javascript" src="static/js/simditor/uploader.js"></script>
+<script type="text/javascript" src="static/js/simditor/simditor.js"></script>
 <script src="static/js/vendor/bootstrap.min.js"></script>
 <script src="static/js/datepicker.js"></script>
 <script src="static/js/plugins.js"></script>
@@ -380,6 +404,32 @@
         data: 'file', //参数名
         num: "3"//最多上传图片个数
     })
+</script>
+<script type="text/javascript">
+    (function() {
+        $(function() {
+            var $preview, editor, mobileToolbar, toolbar;
+            Simditor.locale = 'en-US';
+            toolbar = ['title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'indent', 'outdent', 'alignment'];
+            editor = new Simditor({
+                textarea: $('#editor'),
+                placeholder: '这里输入文字...',
+                toolbar: toolbar,
+                pasteImage: true,
+                defaultImage: 'assets/images/image.png',
+                upload: location.search === '?upload' ? {
+                    url: '/upload'
+                } : true
+            });
+            $preview = $('#preview');
+            if ($preview.length > 0) {
+                return editor.on('valuechanged', function(e) {
+                    return $preview.html(editor.getValue());
+                });
+            }
+        });
+
+    }).call(this);
 </script>
 </body>
 </html>

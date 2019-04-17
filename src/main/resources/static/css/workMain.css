@@ -255,10 +255,10 @@ body.tight .wrapper {
     }
 }
 .cd-panel-header {
-    height:20%;
+    height:10%;
     position: fixed;
     width: 90%;
-    background: #fdfcdf;
+    background: #585855c9;
     z-index: 2;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
     -webkit-transition: top 0.3s 0s;
@@ -368,7 +368,7 @@ body.tight .wrapper {
     width: 90%;
     height: 100%;
     top: 0;
-    background: #fcffb8;
+    background: #afafa19c;
     z-index: 1;
     -webkit-transition-property: -webkit-transform;
     -moz-transition-property: -moz-transform;

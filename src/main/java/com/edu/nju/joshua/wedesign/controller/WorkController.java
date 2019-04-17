@@ -72,7 +72,7 @@ public class WorkController {
         }
         model.addAttribute("liked",liked);
 
-        return "workImg";
+            return "workImg";
     }
     @PostMapping("work/ajaxlike")
     public void ajaxLike(@RequestBody Like like, HttpServletResponse response) throws IOException {

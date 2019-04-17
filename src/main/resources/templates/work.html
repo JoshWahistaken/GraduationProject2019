@@ -157,10 +157,10 @@
 <div class="footer" style="width: 600px;float: left;margin-left: 100px">
     <article style="font-size: 1.05rem;text-align: left;width: 500px;margin-right: 0;">
         <h1 th:text="${work.title}">Internet Explorer 9</h1>
-        <p th:text="${work.description}">Windows Internet Explorer 9（简称 IE9）于 2011 年 3 月 14 日发布.....</p>
+        <p th:utext="${work.description}"></p>
     </article>
 </div>
-<div th:switch="${liked}" style="float:right;">
+<div th:switch="${liked}">
     <div class="heart " th:case="false" rel="like" like-value="LIKE" value="LIKE"></div>
     <div class="heart heartAnimation" th:case="true" rel="unlike" like-value="UNLIKE" value="UNLIKE"></div>
 </div>
