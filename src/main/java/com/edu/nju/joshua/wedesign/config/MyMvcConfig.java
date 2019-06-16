@@ -20,7 +20,7 @@ public class MyMvcConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/space").setViewName("user/userSpace");
-        registry.addViewController("/chattest").setViewName("user/chat");
+        registry.addViewController("/chat").setViewName("user/chat");
         /*
         * For testing purposes!!!!!!
         * */
@@ -31,6 +31,7 @@ public class MyMvcConfig implements WebMvcConfigurer {
         registry.addViewController("/work").setViewName("work");
         registry.addViewController("/workImg").setViewName("workImg");
         registry.addViewController("/simditor").setViewName("simditor");
+        registry.addViewController("/search").setViewName("user/search");
     }
 
         @Override

@@ -6,7 +6,7 @@
     <title>Home</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="static/css/venobox/venobox.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="static/css/venobox/venobox.css" type="text/css" media="screen"/>
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link href="static/css/cropper.css" rel="stylesheet"/>
     <link href="static/css/cropper-demo.css" rel="stylesheet"/>
@@ -15,37 +15,97 @@
     <link rel="stylesheet" href="static/css/fontAwesome.css">
     <link rel="stylesheet" href="static/css/light-box.css">
     <link rel="stylesheet" href="static/css/templatemo-main.css">
-    <link rel="stylesheet" type="text/css" href="static/css/simditor/simditor.css" />
+    <link rel="stylesheet" type="text/css" href="static/css/simditor/simditor.css"/>
+    <link rel="stylesheet" type="text/css" href="static/css/search-form.css">
+    <style>
+        .select {
+            height: 30px;
+            float: left;
+            margin-left: 1px;
+            display: inline-block;
+            font-size: large;
+            width: 300px;
+            position: relative;
+            vertical-align: middle;
+            padding: 0;
+            overflow: hidden;
+            background-color: #fff;
+            color: #555;
+            border: 1px solid #aaa;
+            text-shadow: none;
+            border-radius: 4px;
+            transition: box-shadow 0.25s ease;
+            z-index: 2;
+        }
+
+        .select:hover {
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        .select:before {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-top-color: #ccc;
+            top: 14px;
+            right: 10px;
+            cursor: pointer;
+            z-index: -2;
+        }
+
+        .select select {
+            cursor: pointer;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            background: transparent;
+            background-image: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        .select select:focus {
+            outline: none;
+        }
+    </style>
     <script src="static/js/uploadImg.js"></script>
     <link rel="stylesheet" type="text/css" href="static/css/uploadImg.css">
     <script type="text/javascript" src="static/js/cropper.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/css/tags.css"/>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
     <script src="static/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     <style>
-        .simditor{
+        .simditor {
             text-align: left;
             padding: auto;
-            border:none;
+            border: none;
         }
-        .simditor .image-popover{
+
+        .simditor .image-popover {
             height: 150px;
         }
-        .simditor .image-src{
-             color:#000000;
-             border:1px solid #09ffe7;
+
+        .simditor .image-src {
+            color: #000000;
+            border: 1px solid #09ffe7;
             margin-bottom: 2px;
-         }
-        .simditor .settings-field{
+        }
+
+        .simditor .settings-field {
             margin-bottom: 20px;
         }
-        .simditor .image-alt{
-            color:#000000;
-            border:1px solid #09ffe7;
+
+        .simditor .image-alt {
+            color: #000000;
+            border: 1px solid #09ffe7;
             margin-bottom: 2px;
         }
-        .simditor .image-size{
-            color:#000000;
-            border:1px solid #09ffe7;
+
+        .simditor .image-size {
+            color: #000000;
+            border: 1px solid #09ffe7;
             margin-bottom: 2px;
         }
     </style>
@@ -82,6 +142,21 @@
         <li><a href="#3"><i class="fa fa-image"></i> <em>Work</em></a></li>
         <li><a href="#4" th:if="${user.id} eq ${session.user.id}"><i class="fa fa-pencil"></i> <em>Edit</em></a></li>
         <li><a href="#5" th:if="${user.id} eq ${session.user.id}"><i class="fa fa-upload"></i> <em>Upload</em></a></li>
+        <li>
+            <div class="search-wrapper">
+                <form th:action="@{/search}" method="get">
+                    <div class="input-holder">
+                        <input type="text" autocomplete='off' class="search-input" placeholder="Type to search"
+                               name="keyword"/>
+                        <button class="search-icon" onclick="searchToggle(this, event);"><span></span></button>
+                    </div>
+                    <span class="close" onclick="searchToggle(this, event);"></span>
+                    <div class="result-container">
+
+                    </div>
+                </form>
+            </div>
+        </li>
     </ul>
 </nav>
 <script th:inline="javascript">
@@ -112,9 +187,9 @@
                     <br/>
                     <br/>
                     <br/>
-                    <div class="main-btn" th:if="${user.id} ne ${session.user.id}"><a href="#2">Follow <i
-                            class="fa fa-plus"></i></a></div>
-                    <div class="fb-btn" th:if="${user.id} ne ${session.user.id}"><a href="#" target="_blank">Message <i
+                    <!--<div class="main-btn" th:if="${user.id} ne ${session.user.id}"><a href="#2">Follow <i-->
+                            <!--class="fa fa-plus"></i></a></div>-->
+                    <div class="fb-btn"><a href="chat" target="_blank">Message <i
                             class="fa fa-envelope"></i></a></div>
                 </div>
             </div>
@@ -147,7 +222,8 @@
                     <div class="col-md-4 col-sm-6" th:each="work:${works}">
                         <div class="item">
                             <div class="thumb">
-                                <a class="venobox" data-vbtype="iframe" th:href="@{work(workId=${work.id})}" data-lightbox="image-1">
+                                <a class="venobox" data-vbtype="iframe" th:href="@{work(workId=${work.id})}"
+                                   data-lightbox="image-1">
                                     <div class="hover-effect">
                                         <div class="hover-content">
                                             <h2 th:text="${work.title}"></h2>
@@ -214,14 +290,16 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <fieldset class="form-label-group">
-                                    <input name="name" type="text" class="form-control" id="name" th:field="*{name}"
+                                    <input name="name" type="text" autocomplete='off' class="form-control" id="name"
+                                           th:field="*{name}"
                                            placeholder="Your name..." required="">
                                     <label for="name">You name...</label>
                                 </fieldset>
                             </div>
                             <div class="col-md-12">
                                 <fieldset class="form-label-group">
-                                    <input name="subject" type="password" class="form-control" id="password"
+                                    <input name="subject" type="password" autocomplete='off' class="form-control"
+                                           id="password"
                                            th:field="*{password}" placeholder="Your new password ..." required="">
                                     <label for="password">Your new password...</label>
                                 </fieldset>
@@ -235,7 +313,8 @@
                             </div>
                             <div class="col-md-12">
                                 <fieldset>
-                                    <textarea name="message" rows="6" class="form-control" id="description"
+                                    <textarea name="message" rows="6" autocomplete='off' class="form-control"
+                                              id="description"
                                               th:field="*{description}" placeholder="About you..."
                                               required=""></textarea>
                                 </fieldset>
@@ -269,7 +348,8 @@
     <div class="slide" id="5">
         <div class="content fifth-content">
             <div class="container-fluid">
-                <form id="upBox" th:action="@{/user/upload}" th:object="${work}" enctype="multipart/form-data" method="post">
+                <form id="upBox" th:action="@{/user/upload}" th:object="${work}" enctype="multipart/form-data"
+                      method="post">
                     <div id="inputBox">
                         <input type="file" name="file" title="请选择图片" id="file" multiple="multiple"
                                accept="image/png,image/jpg,image/gif,image/JPEG"/>SELECT
@@ -277,7 +357,8 @@
                     </div>
                     <div style="margin-top: 20px;">
                         <fieldset class="form-label-group">
-                            <input name="name" type="text" class="form-control" id="title" th:field="*{title}"
+                            <input name="name" autocomplete='off' type="text" class="form-control" id="title"
+                                   th:field="*{title}"
                                    placeholder="Your Title.." required="">
                             <label for="title"></label>
                         </fieldset>
@@ -285,15 +366,41 @@
 
                     <div id="imgBox">
                     </div>
+
+                    <select class="select" name="filter" th:field="*{kind}">
+                        <option value="男装" selected>男装</option>
+                        <option value="女装">女装</option>
+                        <option value="童装">童装</option>
+                        <option value="内衣">内衣</option>
+                        <option value="礼服">礼服</option>
+                        <option value="大赛">大赛</option>
+                        <option value="配饰">配饰</option>
+                        <option value="针织">针织</option>
+                        <option value="图案">图案</option>
+                        <option value="陈列">陈列</option>
+                        <option value="家纺">家纺</option>
+                        <option value="职业">职业</option>
+                        <option value="其他">其他</option>
+                    </select>
+                    <br/><br/><br/>
+
+                    <div class="box">
+                        <h5 style="text-align: left; color:#ffffff">添加标签</h5>
+                        <div class="tagsinput-primary form-group">
+                            <input name="tagsinput" id="tagsinputval" class="tagsinput" data-role="tagsinput" value=""
+                                   placeholder="输入后回车"/>
+                            <!--<button class="btn" onclick="getinput()">获取输入的值</button>-->
+                        </div>
+                    </div>
                     <div style="margin-top: 20px;">
                         <fieldset>
-                                    <textarea name="message" rows="6"  th:field="*{description}"
-                                               placeholder="Write your work description here..."
+                                    <textarea name="message" rows="6" th:field="*{description}"
+                                              placeholder="Write your work description here..."
                                               required="" id="editor"></textarea>
                         </fieldset>
                     </div>
                     <div>
-                    <input type="submit" id="btn" value="Upload your work!" style="float: left">
+                        <input type="submit" id="btn" value="Upload your work!" style="float: left">
                     </div>
                 </form>
             </div>
@@ -309,6 +416,7 @@
 
 
 <script src="static/js/vendor/jquery-1.11.2.min.js"></script>
+<script src="static/js/tagsinput.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" src="static/js/venobox/venobox.min.js"></script>
 <script type="text/javascript" src="static/js/simditor/module.js"></script>
 <script type="text/javascript" src="static/js/simditor/hotkeys.js"></script>
@@ -406,8 +514,8 @@
     })
 </script>
 <script type="text/javascript">
-    (function() {
-        $(function() {
+    (function () {
+        $(function () {
             var $preview, editor, mobileToolbar, toolbar;
             Simditor.locale = 'en-US';
             toolbar = ['title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale', 'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link', 'image', 'hr', '|', 'indent', 'outdent', 'alignment'];
@@ -423,7 +531,7 @@
             });
             $preview = $('#preview');
             if ($preview.length > 0) {
-                return editor.on('valuechanged', function(e) {
+                return editor.on('valuechanged', function (e) {
                     return $preview.html(editor.getValue());
                 });
             }
@@ -431,5 +539,67 @@
 
     }).call(this);
 </script>
+<!--搜索框js-->
+<script type="text/javascript">
+    function searchToggle(obj, evt) {
+        var container = $(obj).closest('.search-wrapper');
+
+        if (!container.hasClass('active')) {
+            container.addClass('active');
+            evt.preventDefault();
+        } else if (container.hasClass('active') && $(obj).closest('.input-holder').length == 0) {
+            container.removeClass('active');
+            // clear input
+            container.find('.search-input').val('');
+            // clear and hide result container when we press close
+            container.find('.result-container').fadeOut(100, function () {
+                $(this).empty();
+            });
+        }
+    }
+
+    function submitFn(obj, evt) {
+        value = $(obj).find('.search-input').val().trim();
+
+        _html = "Yup yup! Your search text sounds like this: ";
+        if (!value.length) {
+            _html = "Yup yup! Add some text friend :D";
+        } else {
+            _html += "<b>" + value + "</b>";
+        }
+
+        $(obj).find('.result-container').html('<span>' + _html + '</span>');
+        $(obj).find('.result-container').fadeIn(100);
+
+        evt.preventDefault();
+    }
+</script>
+<script type="text/javascript">
+    function getinput() {
+        alert($('#tagsinputval').val());
+    }
+</script>
+
+<!--&lt;!&ndash;-->
+
+<!--select   &#45;&#45;  name 可以接收选择的值【用于表单提交  名称自定义】-->
+
+<!--option   &#45;&#45;  1.  value    传给后台的参数-->
+<!--1.  selected 设置默认选中-->
+<!--2.  disabled 设置禁止选则-->
+
+<!--&ndash;&gt;-->
+<!--<script type="text/javascript" src="static/js/selectFilter.js"></script>-->
+<!--<script type="text/javascript">-->
+<!--//本小插件支持移动端哦-->
+
+<!--//这里是初始化-->
+<!--$('.filter-box').selectFilter({-->
+<!--callBack : function (val){-->
+<!--//返回选择的值-->
+<!--console.log(val+'-是返回的值')-->
+<!--}-->
+<!--});-->
+<!--</script>-->
 </body>
 </html>

@@ -1,7 +1,11 @@
 package com.edu.nju.joshua.wedesign.controller.user;
 
+import com.edu.nju.joshua.wedesign.mapper.TagMapper;
+import com.edu.nju.joshua.wedesign.mapper.TagsRelationshipsMapper;
 import com.edu.nju.joshua.wedesign.mapper.UserMapper;
 import com.edu.nju.joshua.wedesign.mapper.WorkMapper;
+import com.edu.nju.joshua.wedesign.model.Tag;
+import com.edu.nju.joshua.wedesign.model.TagsRelationships;
 import com.edu.nju.joshua.wedesign.model.User;
 import com.edu.nju.joshua.wedesign.model.Work;
 import com.edu.nju.joshua.wedesign.service.UserService;
@@ -43,6 +47,10 @@ public class UserSpaceController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private WorkMapper workMapper;
+    @Autowired
+    private TagMapper tagMapper;
+    @Autowired
+    private TagsRelationshipsMapper tagsRelationshipsMapper;
 
     @GetMapping("/space")
     public String getUserSpace(Model model, @ModelAttribute(value = "user") User user, @ModelAttribute(value = "work") Work work, @RequestParam(value = "id", required = false) Integer id, HttpSession session) {
@@ -128,8 +136,37 @@ public class UserSpaceController {
     }
 
     @PostMapping("/user/upload")
-    public void workUpload(Model model, @RequestParam("file") MultipartFile[] file, Work work, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void workUpload(Model model,@RequestParam("tagsinput")String tags, @RequestParam("file") MultipartFile[] file, Work work, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+//        if(!tags.equals("")){
+//            String[] tag=tags.split(",");
+//            int[] tagIds=new int[tag.length];
+//            for(int i=0;i<tag.length;i++){
+//                List<Tag> tagCheck=tagMapper.getTagByName(tag[i]);
+//                if(tagCheck.size()==0) {
+//                    tagMapper.addTag(tag[i]);
+//                    tagIds[i]=tagMapper.getTagByName(tag[i]).get(0).id;
+//                }
+//                else{
+//                    tagIds[i]=tagCheck.get(0).id;
+//                }
+//            }
+//        }
+        int[] tagIds=new int[0];
         if (file.length > 0) {
+            if(!tags.equals("")){
+                String[] tag=tags.split(",");
+                tagIds=new int[tag.length];
+                for(int i=0;i<tag.length;i++){
+                    List<Tag> tagCheck=tagMapper.getTagByName(tag[i]);
+                    if(tagCheck.size()==0) {
+                        tagMapper.addTag(tag[i]);
+                        tagIds[i]=tagMapper.getTagByName(tag[i]).get(0).id;
+                    }
+                    else{
+                        tagIds[i]=tagCheck.get(0).id;
+                    }
+                }
+            }
             String serialId = UUID.randomUUID() + "";
             int i = 1;
             for (MultipartFile f : file) {
@@ -155,8 +192,16 @@ public class UserSpaceController {
                     response.getWriter().write("<script>alert('Something went wrong, fix it man..');location = '/wedesign/space';</script>");
                     e.printStackTrace();
                 }
-                response.getWriter().write("<script>alert('Your work is successfully uploaded!');location = '/wedesign/space';</script>");
             }
+            List<Work> worksUploaded=workMapper.getBySerialId(serialId);
+            if(tagIds.length>0) {
+                for (Work w : worksUploaded) {
+                    for(int j=0;j<tagIds.length;j++) {
+                        tagsRelationshipsMapper.addRelationship(w.id, tagIds[j]);
+                    }
+                }
+            }
+            response.getWriter().write("<script>alert('Your work is successfully uploaded!');location = '/wedesign/space';</script>");
         }
     }
 }

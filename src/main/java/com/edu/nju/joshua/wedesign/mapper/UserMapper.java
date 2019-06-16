@@ -12,7 +12,7 @@ public interface UserMapper {
     @Options(useGeneratedKeys = true,keyProperty = "id")
     @Insert("insert into user(username, password, name, age, gender, avatar, email,confirmationToken) values(#{username}, #{password}, #{name}, #{age}, #{gender}, #{avatar}, #{email},#{confirmationToken})")
     public int insertUser(User user);
-    @Update("update user set username=#{username}, password=#{password}, name=#{name}, age=#{age}, gender=#{gender}, avatar=#{avatar}, email=#{email}, enabled=#{enabled}, confirmationToken=#{confirmationToken}, description=#{description}, avatar_x=#{avatar_x}, avatar_y=#{avatar_y}, avatar_w=#{avatar_w}, avatar_h=#{avatar_h} where id=#{id}")
+    @Update("update user set username=#{username}, password=#{password}, name=#{name}, age=#{age}, gender=#{gender}, avatar=#{avatar}, email=#{email}, enabled=#{enabled}, confirmationToken=#{confirmationToken}, description=#{description}, avatar_x=#{avatar_x}, avatar_y=#{avatar_y}, avatar_w=#{avatar_w}, avatar_h=#{avatar_h},userIsOnline=#{userIsOnline} where id=#{id}")
     public int updateUser(User user);
     @Select("select * from user where username=#{username} and password=#{password}")
     public User userAuthenticate(String username,String password);

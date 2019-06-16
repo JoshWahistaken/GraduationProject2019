@@ -42,6 +42,7 @@ public class UserLoginController {
         } else if (loginResult == LoginResult.SUCCESS) {
             User currentUser = userService.getUserByUsername(user.getUsername());
             session.setAttribute("user", currentUser);
+            session.setAttribute("currentUser",currentUser);
             session.setAttribute("role", "USER");
             model.addAttribute("user",currentUser);
             return "redirect:/space";

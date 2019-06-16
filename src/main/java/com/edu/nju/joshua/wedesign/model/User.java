@@ -8,6 +8,16 @@ public class User {
     public Double avatar_x;
     public Double avatar_y;
 
+    public Integer getUserIsOnline() {
+        return userIsOnline;
+    }
+
+    public void setUserIsOnline(Integer userIsOnline) {
+        this.userIsOnline = userIsOnline;
+    }
+
+    public Integer userIsOnline;
+
     public Double getAvatar_x() {
         return avatar_x;
     }
